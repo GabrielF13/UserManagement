@@ -1,41 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using UserManagement.Domain.Events;
 
 namespace UserManagement.Infra.Repositories.Notifications
 {
-    public class NotificationRepository : INotificationRepository
+    public class NotificationRepository : MongoRepository<NotificationEvent>, INotificationRepository
     {
-        protected readonly UserManagementDbContext _context;
-        protected readonly DbSet<NotificationEvent> _dbSet;
-
-        public NotificationRepository(UserManagementDbContext context, DbSet<NotificationEvent> dbSet)
+        public NotificationRepository(UserManagementDbContext context)
+            : base(context, "NotificationEvents")
         {
-            _context = context;
-            _dbSet = dbSet;
         }
 
-        public async Task<IEnumerable<NotificationEvent>> GetAllAsync()
+        public async Task<IEnumerable<NotificationEvent>> GetByTypeAsync(NotificationType type)
         {
-            return await _dbSet.ToListAsync();
+            var filter = Builders<NotificationEvent>.Filter.Eq(n => n.Type, type);
+            return await _collection.Find(filter).ToListAsync();
         }
 
-        public async Task<NotificationEvent> GetByIdAsync(Guid id)
+        public async Task<IEnumerable<NotificationEvent>> GetByDateRangeAsync(DateTime start, DateTime end)
         {
-            return await _dbSet.FindAsync(id);
-        }
-        public async Task CreateAsync(NotificationEvent notificationEvent)
-        {
-            await _dbSet.AddAsync(notificationEvent);
-        }
-
-        public async Task RemoveAsync(NotificationEvent notificationEvent)
-        {
-            _dbSet.Remove(notificationEvent);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
+            var filter = Builders<NotificationEvent>.Filter.And(
+                Builders<NotificationEvent>.Filter.Gte(n => n.Timestamp, start),
+                Builders<NotificationEvent>.Filter.Lte(n => n.Timestamp, end)
+            );
+            return await _collection.Find(filter).ToListAsync();
         }
     }
 }

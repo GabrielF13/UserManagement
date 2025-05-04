@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.Infra.Repositories.Notifications;
 using UserManagement.Infra.Repositories.Users;
 
 namespace UserManagement.Infra.DependencyInjection
@@ -14,23 +16,33 @@ namespace UserManagement.Infra.DependencyInjection
     {
         public static IServiceCollection Configuration(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddRepositoriesServices();        
-            services.AddSqlConnection();        
+            services.AddMongoDbConnection(configuration);     
+            return services;
+
         }
 
-        private static IServiceCollection AddRepositoriesServices(this IServiceCollection services)
-        { 
+        public static IServiceCollection AddMongoDbConnection(this IServiceCollection services, IConfiguration configuration)
+        {
+            var mongoDbSettingsSection = configuration.GetSection("MongoDbSettings");
+
+            services.AddSingleton<MongoDbSettings>(sp =>
+            {
+                var settings = new MongoDbSettings();
+                mongoDbSettingsSection.Bind(settings);
+                return settings;
+            });
+
+            services.Configure<MongoDbSettings>(mongoDbSettingsSection);
+
+            services.AddSingleton<UserManagementDbContext>(provider =>
+            {
+                var settings = provider.GetRequiredService<MongoDbSettings>();
+
+                return new UserManagementDbContext(settings);
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-
-            return services;
-        }
-
-        private static IServiceCollection AddSqlConnection(this IServiceCollection services, IConfiguration configuration)
-        {
-            var connectionString = configuration.GetConnectionString("Connection");
-            services.AddDbContext<UserManagementDbContext>(optitons =>
-                optitons.UseSqlServer(connectionString));
 
             return services;
         }

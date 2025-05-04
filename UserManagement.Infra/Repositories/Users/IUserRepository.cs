@@ -13,10 +13,8 @@ namespace UserManagement.Infra.Repositories.Users
 
         Task<IEnumerable<User>> GetAllAsync();
 
+        Task<User> GetByEmailAsync(string email);
+
         Task CreateAsync(User user);
-
-        Task RemoveAsync(User user);
-
-        Task SaveChangesAsync();
     }
 }

@@ -1,27 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Driver;
 using UserManagement.Domain.Entities;
 using UserManagement.Domain.Events;
 
 namespace UserManagement.Infra
 {
-    public class UserManagementDbContext : DbContext
+    public class UserManagementDbContext 
     {
-        public UserManagementDbContext(DbContextOptions<UserManagementDbContext> options) : base(options)
+        private readonly IMongoDatabase _database;
+        private readonly MongoClient _client;
+
+        public UserManagementDbContext(MongoDbSettings settings)
         {
+            _client = new MongoClient(settings.ConnectionString);
+            _database = _client.GetDatabase(settings.DatabaseName);
         }
 
-        public DbSet<User>  Users { get; set; }
-        public DbSet<NotificationEvent> notificationEvents { get; set; }
+        public IMongoDatabase Database => _database;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
+        public IMongoCollection<User> Users =>
+            _database.GetCollection<User>("Users");
+
+        public IMongoCollection<NotificationEvent> NotificationEvents =>
+            _database.GetCollection<NotificationEvent>("NotificationEvents");
     }
 }

@@ -1,42 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using UserManagement.Domain.Entities;
 
 namespace UserManagement.Infra.Repositories.Users
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : MongoRepository<User>, IUserRepository
     {
-        protected readonly UserManagementDbContext _context;
-        protected readonly DbSet<User> _dbSet;
-
-        public UserRepository(UserManagementDbContext context, DbSet<User> dbSet)
-        {
-            _context = context;
-            _dbSet = dbSet;
+        public UserRepository(UserManagementDbContext context)
+            : base(context, "Users")
+        { 
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<User> GetByEmailAsync(string email)
         {
-            return await _dbSet.ToListAsync();
-        }
-
-        public async Task<User> GetByIdAsync(Guid id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
-        public async Task CreateAsync(User user)
-        {
-            await _dbSet.AddAsync(t);
-        }
-
-        public async Task RemoveAsync(User user)
-        {
-            _dbSet.Remove(user);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
+            var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            return await _collection.Find(filter).FirstOrDefaultAsync();
         }
     }
 }

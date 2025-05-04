@@ -1,3 +1,7 @@
+using UserManagement.Application.Services;
+using UserManagement.Domain.Interfaces.Services;
+using UserManagement.Infra.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddMongoDbConnection(builder.Configuration);
 
 var app = builder.Build();
 

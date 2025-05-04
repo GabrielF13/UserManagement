@@ -10,9 +10,5 @@ namespace UserManagement.Infra.Repositories.Notifications
         Task<IEnumerable<NotificationEvent>> GetAllAsync();
 
         Task CreateAsync(NotificationEvent notificationEvent);
-
-        Task RemoveAsync(NotificationEvent notificationEvent);
-
-        Task SaveChangesAsync();
     }
 }
