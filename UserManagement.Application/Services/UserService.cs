@@ -1,6 +1,5 @@
 ﻿using UserManagement.Domain.Dtos;
 using UserManagement.Domain.Entities;
-using UserManagement.Domain.Events;
 using UserManagement.Domain.Interfaces.Services;
 using UserManagement.Infra.Repositories.Users;
 
@@ -15,9 +14,23 @@ namespace UserManagement.Application.Services
             _userRepository = userRepository;
         }
 
-        public Task DeleteUserAsync(Guid Id)
+        public async Task<bool> DeleteUserAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(id);
+
+                if (user == null)
+                    throw new InvalidOperationException("Usuário não encontrado");
+
+                await _userRepository.DeleteAsync(id);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public Task<User> GetByEmailAsync(string email)
@@ -25,9 +38,16 @@ namespace UserManagement.Application.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> GetByIdAsync(Guid Id)
+        public async Task<User> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (user is null)
+            {
+                throw new InvalidOperationException("Usuário não encontrado");
+            }
+
+            return user;
         }
 
         public async Task<Guid> RegisterUserAsync(UserDto userDto)
@@ -56,9 +76,24 @@ namespace UserManagement.Application.Services
             return user.Id;
         }
 
-        public Task UpdateUserAsync(UserDto user)
+        public async Task<bool> UpdateUserAsync(UserDto userDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userDto.Id);
+
+                if (user is null)
+                {
+                    throw new InvalidOperationException("Usuário não encontrado");
+                }
+
+                await _userRepository.UpdateAsync(user.Id, user);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

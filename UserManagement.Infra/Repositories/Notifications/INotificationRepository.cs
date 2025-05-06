@@ -1,5 +1,4 @@
-﻿using UserManagement.Domain.Entities;
-using UserManagement.Domain.Events;
+﻿using UserManagement.Domain.Events;
 
 namespace UserManagement.Infra.Repositories.Notifications
 {

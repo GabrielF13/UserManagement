@@ -15,14 +15,17 @@ namespace UserManagement.API.Controllers
             _userService = userService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(Guid id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+
+            return Ok(user);
+        }
+
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] UserDto userDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
                 var userId = await _userService.RegisterUserAsync(userDto);
@@ -34,10 +37,30 @@ namespace UserManagement.API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(Guid id)
+        [HttpPatch]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDto userDto)
         {
-            return Ok(new { Id = id, Message = "Método de obtenção de detalhes do usuário" });
+            var updated = await _userService.UpdateUserAsync(userDto);
+
+            if (updated)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser([FromBody] Guid id)
+        {
+            var updated = await _userService.DeleteUserAsync(id);
+
+            if (updated)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

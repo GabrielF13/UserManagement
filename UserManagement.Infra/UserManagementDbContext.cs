@@ -4,7 +4,7 @@ using UserManagement.Domain.Events;
 
 namespace UserManagement.Infra
 {
-    public class UserManagementDbContext 
+    public class UserManagementDbContext
     {
         private readonly IMongoDatabase _database;
         private readonly MongoClient _client;

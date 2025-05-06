@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserManagement.Domain.Entities;
+﻿using UserManagement.Domain.Entities;
 
 namespace UserManagement.Infra.Repositories.Users
 {
@@ -16,5 +11,9 @@ namespace UserManagement.Infra.Repositories.Users
         Task<User> GetByEmailAsync(string email);
 
         Task CreateAsync(User user);
+
+        Task UpdateAsync(Guid id, User entity);
+
+        Task DeleteAsync(Guid id);
     }
 }

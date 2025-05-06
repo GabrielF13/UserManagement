@@ -1,12 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserManagement.Infra.Repositories.Notifications;
 using UserManagement.Infra.Repositories.Users;
 
@@ -16,9 +9,8 @@ namespace UserManagement.Infra.DependencyInjection
     {
         public static IServiceCollection Configuration(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMongoDbConnection(configuration);     
+            services.AddMongoDbConnection(configuration);
             return services;
-
         }
 
         public static IServiceCollection AddMongoDbConnection(this IServiceCollection services, IConfiguration configuration)

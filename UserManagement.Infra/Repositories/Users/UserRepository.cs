@@ -8,7 +8,7 @@ namespace UserManagement.Infra.Repositories.Users
     {
         public UserRepository(UserManagementDbContext context)
             : base(context, "Users")
-        { 
+        {
         }
 
         public async Task<User> GetByEmailAsync(string email)
