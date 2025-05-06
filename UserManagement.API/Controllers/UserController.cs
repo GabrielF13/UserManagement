@@ -38,9 +38,9 @@ namespace UserManagement.API.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateUser([FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserDto userDto)
         {
-            var updated = await _userService.UpdateUserAsync(userDto);
+            var updated = await _userService.UpdateUserAsync(id, userDto);
 
             if (updated)
             {

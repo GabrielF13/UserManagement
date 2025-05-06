@@ -76,18 +76,20 @@ namespace UserManagement.Application.Services
             return user.Id;
         }
 
-        public async Task<bool> UpdateUserAsync(UserDto userDto)
+        public async Task<bool> UpdateUserAsync(Guid id, UserDto userDto)
         {
             try
             {
-                var user = await _userRepository.GetByIdAsync(userDto.Id);
+                var user = await _userRepository.GetByIdAsync(id);
 
                 if (user is null)
                 {
                     throw new InvalidOperationException("Usuário não encontrado");
                 }
 
-                await _userRepository.UpdateAsync(user.Id, user);
+                var updateUser = new User(id, userDto.Name, userDto.Email);
+
+                await _userRepository.UpdateAsync(user.Id, updateUser);
                 return true;
             }
             catch (Exception)

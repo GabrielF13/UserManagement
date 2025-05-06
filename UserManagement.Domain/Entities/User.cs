@@ -11,6 +11,13 @@ namespace UserManagement.Domain.Entities
             Email = email;
         }
 
+        public User(Guid id, string name, string email)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.String)]
         public Guid Id { get; set; }

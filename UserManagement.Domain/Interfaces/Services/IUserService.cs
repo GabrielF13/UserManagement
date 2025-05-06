@@ -7,7 +7,7 @@ namespace UserManagement.Domain.Interfaces.Services
     {
         Task<Guid> RegisterUserAsync(UserDto user);
 
-        Task<bool> UpdateUserAsync(UserDto user);
+        Task<bool> UpdateUserAsync(Guid id, UserDto user);
 
         Task<bool> DeleteUserAsync(Guid id);
 
