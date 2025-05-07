@@ -1,6 +1,7 @@
 using UserManagement.Application.Services;
 using UserManagement.Domain.Interfaces.Services;
 using UserManagement.Infra.DependencyInjection;
+using UserManagement.Infra.Message;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMessageBroker, RabbitMQMessageBroker>();
 
 builder.Services.AddMongoDbConnection(builder.Configuration);
 

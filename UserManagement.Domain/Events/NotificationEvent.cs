@@ -27,6 +27,12 @@ namespace UserManagement.Domain.Events
             Data = data;
         }
 
+        public NotificationEvent(NotificationType type,Dictionary<string, string> data)
+        {
+            Type = type;
+            Data = data;
+        }
+
         public NotificationEvent()
         {
             Data = new Dictionary<string, string>();

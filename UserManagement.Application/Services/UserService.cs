@@ -1,6 +1,8 @@
 ﻿using UserManagement.Domain.Dtos;
 using UserManagement.Domain.Entities;
+using UserManagement.Domain.Events;
 using UserManagement.Domain.Interfaces.Services;
+using UserManagement.Infra.Message;
 using UserManagement.Infra.Repositories.Users;
 
 namespace UserManagement.Application.Services
@@ -8,10 +10,12 @@ namespace UserManagement.Application.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMessageBroker _messageBroker;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMessageBroker messageBroker)
         {
             _userRepository = userRepository;
+            _messageBroker = messageBroker;
         }
 
         public async Task<bool> DeleteUserAsync(Guid id)
@@ -68,10 +72,10 @@ namespace UserManagement.Application.Services
                 ["UserEmail"] = user.Email
             };
 
-            //var notificationEvent = new NotificationEvent(NotificationType.UserRegistration, notificationData);
+            var notificationEvent = new NotificationEvent(NotificationType.UserRegistration, notificationData);
 
-            // Publicar evento no message broker
-            //await _messageBroker.PublishAsync("notifications", notificationEvent);
+            //Publicar evento no message broker
+            await _messageBroker.PublishAsync("notifications", notificationEvent);
 
             return user.Id;
         }
