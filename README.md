@@ -1,86 +1,61 @@
-UserManagement
-O UserManagement é uma aplicação desenvolvida em .NET com o objetivo de gerenciar usuários de forma eficiente e escalável. Utilizando uma arquitetura em camadas, o projeto promove a separação de responsabilidades, facilitando a manutenção, testes e evolução da aplicação.
 
-🔧 Tecnologias Utilizadas
-.NET (C#)
+# UserManagement
 
-ASP.NET Core
+O **UserManagement** é uma aplicação desenvolvida em .NET com o objetivo de gerenciar usuários de forma eficiente e escalável.
+Utilizando uma arquitetura em camadas, o projeto promove a separação de responsabilidades, facilitando a manutenção, testes e evolução da aplicação.
 
-Entity Framework Core
+## 🔧 Tecnologias Utilizadas
 
-xUnit para testes unitários
+- .NET (C#)
+- ASP.NET Core
+- Entity Framework Core
+- xUnit para testes unitários
+- Arquitetura em camadas (API, Application, Domain, Infra)
 
-Arquitetura em camadas (API, Application, Domain, Infra)
-GitHub
+## 📁 Estrutura do Projeto
 
-📁 Estrutura do Projeto
-UserManagement.API: Contém os controladores e configurações da API RESTful.
+- `UserManagement.API`: Contém os controladores e configurações da API RESTful.
+- `UserManagement.Application`: Inclui os casos de uso e a lógica de aplicação.
+- `UserManagement.Domain`: Define as entidades e interfaces do domínio.
+- `UserManagement.Infra`: Implementa os repositórios e acesso a dados.
+- `UserManagement.UnitTests`: Projetos de testes unitários para garantir a qualidade do código.
 
-UserManagement.Application: Inclui os casos de uso e a lógica de aplicação.
+## 🚀 Como Executar o Projeto
 
-UserManagement.Domain: Define as entidades e interfaces do domínio.
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/GabrielF13/UserManagement.git
+   cd UserManagement
+   ```
 
-UserManagement.Infra: Implementa os repositórios e acesso a dados.
+2. Restaure as dependências:
+   ```bash
+   dotnet restore
+   ```
 
-UserManagement.UnitTests: Projetos de testes unitários para garantir a qualidade do código.
-GitHub
-+1
-GitHub
-+1
+3. Execute a aplicação:
+   ```bash
+   dotnet run --project UserManagement.API
+   ```
 
-🚀 Como Executar o Projeto
-Clone o repositório:
+4. Acesse a API em `https://localhost:5001` ou `http://localhost:5000`.
 
-bash
-Copiar
-Editar
-git clone https://github.com/GabrielF13/UserManagement.git
-cd UserManagement:contentReference[oaicite:56]{index=56}
-Restaure as dependências:
+## ✅ Executando os Testes
 
-bash
-Copiar
-Editar
-dotnet restore
-Execute a aplicação:
-
-bash
-Copiar
-Editar
-dotnet run --project UserManagement.API
-Acesse a API em https://localhost:5001 ou http://localhost:5000.
-
-✅ Executando os Testes
 Para rodar os testes unitários:
-
-bash
-Copiar
-Editar
+```bash
 dotnet test UserManagement.UnitTests
-📌 Funcionalidades
-Cadastro de usuários
+```
 
-Atualização de informações de usuários
+## 📌 Funcionalidades
 
-Listagem de usuários
+- Cadastro de usuários
+- Atualização de informações de usuários
+- Listagem de usuários
+- Remoção de usuários
+- Validações de entrada
+- Testes unitários para os principais casos de uso
 
-Remoção de usuários
+## 📄 Licença
 
-Validações de entrada
-
-Testes unitários para os principais casos de uso
-GitHub
-+1
-GitHub
-+1
-GitHub
-+1
-GitHub
-+1
-
-📄 Licença
-Este projeto está licenciado sob a MIT License.
-GitHub
-+1
-GitHub
-+1
+Este projeto está licenciado sob a [MIT License](LICENSE).
